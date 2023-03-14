@@ -15,4 +15,4 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
 
       - name: Run Tests
-        run: ./gradlew test
+        run: ./gradlew test --no-daemon
