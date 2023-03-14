@@ -50,6 +50,7 @@ class BroestechBasePlugin : Plugin<Project> {
 
       repositories {
         mavenCentral()
+        google()
         mavenLocal()
       }
 

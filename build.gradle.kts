@@ -4,13 +4,9 @@ plugins {
   signing
 }
 
-// require
-repositories {
-  mavenCentral()
-  gradlePluginPortal()
-  mavenLocal()
+if(version == "unspecified") {
+  version ="0.0.0-SNAPSHOT"
 }
-
 group = "de.broestech.monorepo.gradle.plugin"
 
 val kotlinVersion: String by project
@@ -23,6 +19,7 @@ dependencies {
   implementation("io.quarkus:gradle-application-plugin:$quarkusVersion")
   implementation("org.jetbrains.gradle:package-search-gradle-plugins:1.5.2")
   implementation("me.qoomon:gradle-git-versioning-plugin:6.4.2")
+  implementation("com.android.tools.build:gradle:7.4.2")
 }
 
 gradlePlugin {
@@ -42,6 +39,14 @@ gradlePlugin {
     register("broestech-quarkus") {
       id = "broestech-quarkus"
       implementationClass = "de.broestech.monorepo.gradle.plugin.quarkus.QuarkusPlugin"
+    }
+    register("broestech-multiplatform-mobile-lib") {
+      id = "broestech-multiplatform-mobile-lib"
+      implementationClass = "de.broestech.monorepo.gradle.plugin.mmp.MobileMultiplatformLibraryPlugin"
+    }
+    register("broestech-kotlin-android") {
+      id = "broestech-kotlin-android"
+      implementationClass = "de.broestech.monorepo.gradle.plugin.kotlin.AndroidKotlinPlugin"
     }
   }
 }
@@ -121,4 +126,13 @@ signing {
   val signingPassword: String? by project
   useInMemoryPgpKeys(signingKey, signingPassword)
   sign(publishing.publications["mavenJava"])
+}
+
+gradle.taskGraph.whenReady {
+  if (hasTask(":publishToMavenLocal")) {
+    println("disable signing")
+    tasks.withType<Sign>().configureEach {
+      onlyIf("local publish") { false }
+    }
+  }
 }
