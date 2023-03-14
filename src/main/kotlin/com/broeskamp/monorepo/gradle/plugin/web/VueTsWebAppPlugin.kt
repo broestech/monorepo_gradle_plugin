@@ -1,4 +1,4 @@
-package de.broestech.monorepo.gradle.plugin.web
+package com.broeskamp.monorepo.gradle.plugin.web
 
 import com.github.gradle.node.NodeExtension
 import com.github.gradle.node.NodePlugin

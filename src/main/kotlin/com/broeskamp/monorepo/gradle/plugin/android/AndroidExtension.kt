@@ -1,4 +1,4 @@
-package de.broestech.monorepo.gradle.plugin.android
+package com.broeskamp.monorepo.gradle.plugin.android
 
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
