@@ -7,7 +7,7 @@ plugins {
 if(version == "unspecified") {
   version ="0.0.0-SNAPSHOT"
 }
-group = "de.broestech.monorepo.gradle.plugin"
+group = "com.broeskamp.monorepo.gradle.plugin"
 
 val kotlinVersion: String by project
 val quarkusVersion: String by project
@@ -26,27 +26,27 @@ gradlePlugin {
   plugins {
     register("broestech-base") {
       id = "broestech-base"
-      implementationClass = "de.broestech.monorepo.gradle.plugin.base.BroestechBasePlugin"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.base.BroestechBasePlugin"
     }
     register("broestech-vue-app-plugin") {
       id = "broestech-vue-app"
-      implementationClass = "de.broestech.monorepo.gradle.plugin.web.VueTsWebAppPlugin"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.web.VueTsWebAppPlugin"
     }
     register("broestech-multiplatform") {
       id = "broestech-multiplatform"
-      implementationClass = "de.broestech.monorepo.gradle.plugin.mmp.MultiplatformPlugin"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.mmp.MultiplatformPlugin"
     }
     register("broestech-quarkus") {
       id = "broestech-quarkus"
-      implementationClass = "de.broestech.monorepo.gradle.plugin.quarkus.QuarkusPlugin"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.quarkus.QuarkusPlugin"
     }
     register("broestech-multiplatform-mobile-lib") {
       id = "broestech-multiplatform-mobile-lib"
-      implementationClass = "de.broestech.monorepo.gradle.plugin.mmp.MobileMultiplatformLibraryPlugin"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.mmp.MobileMultiplatformLibraryPlugin"
     }
     register("broestech-kotlin-android") {
       id = "broestech-kotlin-android"
-      implementationClass = "de.broestech.monorepo.gradle.plugin.kotlin.AndroidKotlinPlugin"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.kotlin.AndroidKotlinPlugin"
     }
   }
 }
