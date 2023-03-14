@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) [2022] [Bröskamp Consulting GmbH](https://broeskamp.com)
+Copyright &copy; 2023 [Bröskamp Consulting GmbH](https://broeskamp.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

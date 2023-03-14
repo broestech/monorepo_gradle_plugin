@@ -116,7 +116,7 @@ class QuarkusPlugin : Plugin<Project> {
         "native"
       )
       if (hasTask("$path:$dockerTaskName")
-        && OperatingSystem.current() != OperatingSystem.LINUX
+        && OperatingSystem.current().familyName != "linux"
       ) {
         println("")
         println("Enable Quarkus Container Build")

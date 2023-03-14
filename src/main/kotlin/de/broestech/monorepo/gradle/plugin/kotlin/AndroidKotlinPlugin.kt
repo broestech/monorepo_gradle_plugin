@@ -1,0 +1,58 @@
+package de.broestech.monorepo.gradle.plugin.kotlin
+
+import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import de.broestech.monorepo.gradle.plugin.android.AndroidExtension
+import de.broestech.monorepo.gradle.plugin.base.BroestechBaseRootExtension
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.the
+import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
+
+class AndroidKotlinPlugin : Plugin<Project> {
+    override fun apply(project: Project): Unit = project.run {
+        apply<AppPlugin>()
+        apply<KotlinAndroidPluginWrapper>()
+
+        val androidExtension = extensions.create<AndroidExtension>("broestechAndroid")
+        val rootExtension = rootProject.the<BroestechBaseRootExtension>()
+
+        @Suppress("UnstableApiUsage")
+        configure<BaseAppModuleExtension> {
+            namespace = androidExtension.namespace.get()
+            compileSdk = androidExtension.compileSdk.get()
+            compileOptions {
+                sourceCompatibility = rootExtension.javaVersion.get()
+                targetCompatibility = rootExtension.javaVersion.get()
+            }
+            defaultConfig {
+                applicationId = androidExtension.applicationId.get()
+                minSdk = androidExtension.minSdk.get()
+                targetSdk = androidExtension.targetSdk.get()
+                //FIXME generate from version number
+                versionCode = 1
+                versionName = project.version.toString()
+            }
+            buildFeatures {
+                compose = androidExtension.androidExtension.get()
+            }
+            composeOptions {
+                kotlinCompilerExtensionVersion =
+                    androidExtension.kotlinCompilerExtensionVersion.get()
+            }
+            packagingOptions {
+                resources {
+                    excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                }
+            }
+            buildTypes {
+                getByName("release") {
+                    isMinifyEnabled = androidExtension.isMinifyEnabled.get()
+                }
+            }
+        }
+    }
+}
