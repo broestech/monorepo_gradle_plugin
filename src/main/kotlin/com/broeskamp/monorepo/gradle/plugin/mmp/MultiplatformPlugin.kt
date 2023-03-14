@@ -1,4 +1,4 @@
-package de.broestech.monorepo.gradle.plugin.mmp
+package com.broeskamp.monorepo.gradle.plugin.mmp
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

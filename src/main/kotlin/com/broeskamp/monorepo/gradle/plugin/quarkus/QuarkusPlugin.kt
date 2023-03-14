@@ -1,6 +1,6 @@
-package de.broestech.monorepo.gradle.plugin.quarkus
+package com.broeskamp.monorepo.gradle.plugin.quarkus
 
-import de.broestech.monorepo.gradle.plugin.base.BroestechBaseExtension
+import com.broeskamp.monorepo.gradle.plugin.base.BroestechBaseExtension
 import io.quarkus.gradle.QuarkusPlugin
 import io.quarkus.gradle.extension.QuarkusPluginExtension
 import io.quarkus.gradle.tasks.QuarkusBuild

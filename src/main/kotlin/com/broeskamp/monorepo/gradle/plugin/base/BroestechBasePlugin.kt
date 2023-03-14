@@ -1,4 +1,4 @@
-package de.broestech.monorepo.gradle.plugin.base
+package com.broeskamp.monorepo.gradle.plugin.base
 
 import me.qoomon.gradle.gitversioning.GitVersioningPlugin
 import me.qoomon.gradle.gitversioning.GitVersioningPluginExtension

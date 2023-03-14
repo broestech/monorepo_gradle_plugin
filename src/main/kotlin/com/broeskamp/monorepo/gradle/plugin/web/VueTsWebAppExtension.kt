@@ -1,4 +1,4 @@
-package de.broestech.monorepo.gradle.plugin.web
+package com.broeskamp.monorepo.gradle.plugin.web
 
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty

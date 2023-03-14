@@ -1,9 +1,9 @@
-package de.broestech.monorepo.gradle.plugin.mmp
+package com.broeskamp.monorepo.gradle.plugin.mmp
 
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
-import de.broestech.monorepo.gradle.plugin.android.AndroidExtension
-import de.broestech.monorepo.gradle.plugin.base.BroestechBaseRootExtension
+import com.broeskamp.monorepo.gradle.plugin.android.AndroidExtension
+import com.broeskamp.monorepo.gradle.plugin.base.BroestechBaseRootExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.*

@@ -1,4 +1,4 @@
-package de.broestech.monorepo.gradle.plugin.quarkus
+package com.broeskamp.monorepo.gradle.plugin.quarkus
 
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
