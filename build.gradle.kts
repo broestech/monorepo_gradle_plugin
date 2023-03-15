@@ -51,11 +51,28 @@ gradlePlugin {
   }
 }
 
+val sourceJar = tasks.register<Jar>("sourceJar") {
+  archiveClassifier.set("sources")
+  from(sourceSets["main"].allSource)
+}
+
+val javadocJar = tasks.register<Jar>("javadocJar") {
+  archiveClassifier.set("javadoc")
+  from(tasks.javadoc.get().destinationDir)
+}
+
 publishing {
   publications {
     create<MavenPublication>("mavenJava") {
       artifactId = "monorepo_gradle_plugin"
       from(components["java"])
+      artifact(sourceJar) {
+        classifier = "sources"
+      }
+
+      artifact(javadocJar) {
+        classifier = "javadoc"
+      }
       pom {
         name.set(project.group.toString() + ":" + artifactId)
         description.set("Gradle plugin configurations for mono-repositories with Kotlin, Quarkus, Vue & TypeScript.")
