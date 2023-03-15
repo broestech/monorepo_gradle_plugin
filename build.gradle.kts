@@ -128,6 +128,12 @@ signing {
   sign(publishing.publications["mavenJava"])
 }
 
+tasks.javadoc {
+  if (JavaVersion.current().isJava9Compatible) {
+    (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+  }
+}
+
 gradle.taskGraph.whenReady {
   if (hasTask(":publishToMavenLocal")) {
     println("disable signing")

@@ -65,6 +65,9 @@ atlassian-ide-plugin.xml
 # Cursive Clojure plugin
 .idea/replstate.xml
 
+# Google Java Format plugin
+.idea/google-java-formnat.xml
+
 # SonarLint plugin
 .idea/sonarlint/
 
