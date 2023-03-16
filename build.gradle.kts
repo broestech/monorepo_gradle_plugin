@@ -51,64 +51,59 @@ gradlePlugin {
   }
 }
 
-val sourceJar = tasks.register<Jar>("sourceJar") {
-  archiveClassifier.set("sources")
-  from(sourceSets["main"].allSource)
+java {
+  withJavadocJar()
+  withSourcesJar()
 }
 
-val javadocJar = tasks.register<Jar>("javadocJar") {
-  archiveClassifier.set("javadoc")
-  from(tasks.javadoc.get().destinationDir)
+tasks.withType<Javadoc> {
+  (options as StandardJavadocDocletOptions).apply {
+    addBooleanOption("html5", true)
+  }
+}
+
+signing {
+  val signingKey: String? by project
+  val signingPassword: String? by project
+  useInMemoryPgpKeys(signingKey, signingPassword)
 }
 
 publishing {
-  publications {
-    create<MavenPublication>("mavenJava") {
-      artifactId = "monorepo_gradle_plugin"
-      from(components["java"])
-      artifact(sourceJar) {
-        classifier = "sources"
+  publications.withType<MavenPublication> {
+    signing.sign(this)
+    pom {
+      description.set("Gradle plugin configurations for mono-repositories with Kotlin, Quarkus, Vue & TypeScript.")
+      url.set("https://github.com/broestech/monorepo_gradle_plugin")
+      licenses {
+        license {
+          name.set("MIT License")
+          url.set("https://github.com/broestech/monorepo_gradle_plugin/blob/development/LICENSE.md")
+          distribution.set("repository")
+        }
       }
-
-      artifact(javadocJar) {
-        classifier = "javadoc"
-      }
-      pom {
-        name.set(project.group.toString() + ":" + artifactId)
-        description.set("Gradle plugin configurations for mono-repositories with Kotlin, Quarkus, Vue & TypeScript.")
+      scm {
+        connection.set("scm:git:git://github.com/broestech/monorepo_gradle_plugin.git")
         url.set("https://github.com/broestech/monorepo_gradle_plugin")
-        packaging = "jar"
-        licenses {
-          license {
-            name.set("MIT License")
-            url.set("https://github.com/broestech/monorepo_gradle_plugin/blob/development/LICENSE.md")
-            distribution.set("repository")
-          }
+        developerConnection.set("scm:git:ssh://github.com/broestech/monorepo_gradle_plugin.git")
+      }
+      developers {
+        developer {
+          name.set("Simon Gehring")
+          email.set("gehring.simon@broeskamp.com")
+          organization.set("Bröskamp Consulting GmbH")
+          organizationUrl.set("https://broeskamp.com")
         }
-        scm {
-          connection.set("scm:git:git://github.com/broestech/monorepo_gradle_plugin.git")
-          url.set("https://github.com/broestech/monorepo_gradle_plugin")
-          developerConnection.set("scm:git:ssh://github.com/broestech/monorepo_gradle_plugin.git")
+        developer {
+          name.set("Daniel Zwicker")
+          email.set("zwicker.daniel@broeskamp.com")
+          organization.set("Bröskamp Consulting GmbH")
+          organizationUrl.set("https://broeskamp.com")
         }
-        developers {
-          developer {
-            name.set("Simon Gehring")
-            email.set("gehring.simon@broeskamp.com")
-            organization.set("Bröskamp Consulting GmbH")
-            organizationUrl.set("https://broeskamp.com")
-          }
-          developer {
-            name.set("Daniel Zwicker")
-            email.set("zwicker.daniel@broeskamp.com")
-            organization.set("Bröskamp Consulting GmbH")
-            organizationUrl.set("https://broeskamp.com")
-          }
-          developer {
-            name.set("Denis Neumann")
-            email.set("neumann.denis@broeskamp.com")
-            organization.set("Bröskamp Consulting GmbH")
-            organizationUrl.set("https://broeskamp.com")
-          }
+        developer {
+          name.set("Denis Neumann")
+          email.set("neumann.denis@broeskamp.com")
+          organization.set("Bröskamp Consulting GmbH")
+          organizationUrl.set("https://broeskamp.com")
         }
       }
     }
@@ -134,20 +129,6 @@ publishing {
       else
         uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
     }
-  }
-}
-
-
-signing {
-  val signingKey: String? by project
-  val signingPassword: String? by project
-  useInMemoryPgpKeys(signingKey, signingPassword)
-  sign(publishing.publications["mavenJava"])
-}
-
-tasks.javadoc {
-  if (JavaVersion.current().isJava9Compatible) {
-    (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
   }
 }
 

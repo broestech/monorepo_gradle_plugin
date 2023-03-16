@@ -42,4 +42,4 @@ jobs:
         run: echo "RELEASE_VERSION=${GITHUB_REF_NAME:1}" >> $GITHUB_ENV
 
       - name: Gradle publish to Maven Central
-        run: ./gradlew -Pversion=${{ env.RELEASE_VERSION }} publishMavenJavaPublicationToMavenCentralRepository -i
+        run: ./gradlew -Pversion=${{ env.RELEASE_VERSION }} publish -i
