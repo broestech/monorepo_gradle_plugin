@@ -4,8 +4,8 @@ plugins {
   signing
 }
 
-if(version == "unspecified") {
-  version ="0.0.0-SNAPSHOT"
+if (version == "unspecified") {
+  version = "0.0.0-SNAPSHOT"
 }
 group = "com.broeskamp.monorepo.gradle.plugin"
 
@@ -51,11 +51,28 @@ gradlePlugin {
   }
 }
 
+val sourceJar = tasks.register<Jar>("sourceJar") {
+  archiveClassifier.set("sources")
+  from(sourceSets["main"].allSource)
+}
+
+val javadocJar = tasks.register<Jar>("javadocJar") {
+  archiveClassifier.set("javadoc")
+  from(tasks.javadoc.get().destinationDir)
+}
+
 publishing {
   publications {
     create<MavenPublication>("mavenJava") {
       artifactId = "monorepo_gradle_plugin"
       from(components["java"])
+      artifact(sourceJar) {
+        classifier = "sources"
+      }
+
+      artifact(javadocJar) {
+        classifier = "javadoc"
+      }
       pom {
         name.set(project.group.toString() + ":" + artifactId)
         description.set("Gradle plugin configurations for mono-repositories with Kotlin, Quarkus, Vue & TypeScript.")
@@ -101,9 +118,9 @@ publishing {
       name = "MavenCentral"
       credentials {
         username =
-          System.getenv("OSSRH_USERNAME") ?: project.properties["ossrhUsername"] as String? ?: ""
+            System.getenv("OSSRH_USERNAME") ?: project.properties["ossrhUsername"] as String? ?: ""
         password =
-          System.getenv("OSSRH_PASSWORD") ?: project.properties["ossrhPassword"] as String? ?: ""
+            System.getenv("OSSRH_PASSWORD") ?: project.properties["ossrhPassword"] as String? ?: ""
 
         if (username!!.isEmpty()) {
           project.logger.error("Username for maven central is empty")
@@ -126,6 +143,12 @@ signing {
   val signingPassword: String? by project
   useInMemoryPgpKeys(signingKey, signingPassword)
   sign(publishing.publications["mavenJava"])
+}
+
+tasks.javadoc {
+  if (JavaVersion.current().isJava9Compatible) {
+    (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+  }
 }
 
 gradle.taskGraph.whenReady {

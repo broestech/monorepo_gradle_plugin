@@ -15,7 +15,18 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.BufferedReader
 
+/**
+ * The BroestechBasePlugin is a Gradle plugin that applies basic configuration for all projects in a multi-project build.
+ * This plugin applies the GitVersioningPlugin and creates extensions for the root project and all subprojects.
+ * @constructor Creates a new instance of the BroestechBasePlugin.
+ */
 class BroestechBasePlugin : Plugin<Project> {
+
+  /**
+   * Applies the BroestechBasePlugin plugin to the specified Project.
+   * @param project The Project to apply the plugin to.
+   * @throws GradleException if the plugin is not applied to the root project.
+   */
   override fun apply(project: Project) = project.run {
     if (project != project.rootProject) {
       throw GradleException("BroestechBasePlugin (id: broestech-base) is only allowed @ root project")
@@ -30,12 +41,12 @@ class BroestechBasePlugin : Plugin<Project> {
         rev {
           describeTagPattern = "v(.+)"
           val process = ProcessBuilder("git", "describe", "--abbrev=0", "--tags")
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
-            .start()
+              .redirectOutput(ProcessBuilder.Redirect.PIPE)
+              .start()
           val describeOutput =
-            process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
+              process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
           version = (Regex(describeTagPattern).find(describeOutput)?.groupValues?.get(1)
-            ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
+              ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
         }
       }
     }
@@ -95,5 +106,4 @@ class BroestechBasePlugin : Plugin<Project> {
       }
     }
   }
-
 }
