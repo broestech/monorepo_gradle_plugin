@@ -4,8 +4,8 @@ plugins {
   signing
 }
 
-if(version == "unspecified") {
-  version ="0.0.0-SNAPSHOT"
+if (version == "unspecified") {
+  version = "0.0.0-SNAPSHOT"
 }
 group = "com.broeskamp.monorepo.gradle.plugin"
 
@@ -118,9 +118,9 @@ publishing {
       name = "MavenCentral"
       credentials {
         username =
-          System.getenv("OSSRH_USERNAME") ?: project.properties["ossrhUsername"] as String? ?: ""
+            System.getenv("OSSRH_USERNAME") ?: project.properties["ossrhUsername"] as String? ?: ""
         password =
-          System.getenv("OSSRH_PASSWORD") ?: project.properties["ossrhPassword"] as String? ?: ""
+            System.getenv("OSSRH_PASSWORD") ?: project.properties["ossrhPassword"] as String? ?: ""
 
         if (username!!.isEmpty()) {
           project.logger.error("Username for maven central is empty")

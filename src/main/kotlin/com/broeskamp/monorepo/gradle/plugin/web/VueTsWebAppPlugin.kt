@@ -37,14 +37,14 @@ class VueTsWebAppPlugin : Plugin<Project> {
         standardOutput = System.out
       }
       inputs.files(
-        fileTree("src/main/webapp")
+          fileTree("src/main/webapp")
       )
-        .withPropertyName("sourceFiles")
-        .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
+          .withPropertyName("sourceFiles")
+          .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
       outputs.files(
-        fileTree(extension.outputDir)
+          fileTree(extension.outputDir)
       )
-        .withPropertyName("outputFiles")
+          .withPropertyName("outputFiles")
     }
     val zip = tasks.register<Zip>("zip") {
       dependsOn(buildVue)
@@ -79,18 +79,18 @@ class VueTsWebAppPlugin : Plugin<Project> {
         if (download.get()) {
           dependencies {
             add(
-              nodeConfiguration.name,
-              VariantComputer(PlatformHelper.INSTANCE)
-                .computeNodeArchiveDependency(this@run)
+                nodeConfiguration.name,
+                VariantComputer(PlatformHelper.INSTANCE)
+                    .computeNodeArchiveDependency(this@run)
             )
           }
           tasks.named<NodeSetupTask>(NodeSetupTask.NAME) {
             nodeArchiveFile.set(
-              project.layout.file(
-                provider {
-                  nodeConfiguration.get().singleFile
-                }
-              )
+                project.layout.file(
+                    provider {
+                      nodeConfiguration.get().singleFile
+                    }
+                )
             )
           }
         }

@@ -41,12 +41,12 @@ class BroestechBasePlugin : Plugin<Project> {
         rev {
           describeTagPattern = "v(.+)"
           val process = ProcessBuilder("git", "describe", "--abbrev=0", "--tags")
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
-            .start()
+              .redirectOutput(ProcessBuilder.Redirect.PIPE)
+              .start()
           val describeOutput =
-            process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
+              process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
           version = (Regex(describeTagPattern).find(describeOutput)?.groupValues?.get(1)
-            ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
+              ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
         }
       }
     }

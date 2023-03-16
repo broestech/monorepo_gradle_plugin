@@ -71,7 +71,7 @@ class QuarkusPlugin : Plugin<Project> {
       dependsOn(dockerTaskName)
     }
     val quarkusBuild =
-      tasks.named<QuarkusBuild>(QuarkusPlugin.QUARKUS_BUILD_TASK_NAME)
+        tasks.named<QuarkusBuild>(QuarkusPlugin.QUARKUS_BUILD_TASK_NAME)
 
     configure<QuarkusPluginExtension> {
       finalName.set(appName)
@@ -93,55 +93,55 @@ class QuarkusPlugin : Plugin<Project> {
     configure<DockerExtension> {
       @Suppress("UNCHECKED_CAST")
       (extensions["images"] as NamedDomainObjectContainer<DockerImage>)
-        .register(appName) {
-          files {
-            from(extension.dockerfile) {
-              rename { "Dockerfile" }
+          .register(appName) {
+            files {
+              from(extension.dockerfile) {
+                rename { "Dockerfile" }
+              }
+              from(provider {
+                quarkusBuild.get().nativeRunner
+              })
             }
-            from(provider {
-              quarkusBuild.get().nativeRunner
-            })
-          }
-          taskProviders {
-            dockerPrepareTaskProvider {
-              dependsOn(quarkusBuild)
+            taskProviders {
+              dockerPrepareTaskProvider {
+                dependsOn(quarkusBuild)
+              }
             }
           }
-        }
     }
 
     gradle.taskGraph.whenReady {
       project.extra.set(
-        QuarkusPlugin.QUARKUS_PACKAGE_TYPE,
-        "native"
+          QuarkusPlugin.QUARKUS_PACKAGE_TYPE,
+          "native"
       )
       if (hasTask("$path:$dockerTaskName")
-        && OperatingSystem.current().familyName != "linux"
+          && OperatingSystem.current().familyName != "linux"
       ) {
         println("")
         println("Enable Quarkus Container Build")
         println("")
 
         project.extra.set(
-          "quarkus.native.container-build",
-          "true"
+            "quarkus.native.container-build",
+            "true"
         )
         project.extra.set(
-          "quarkus.native.container-runtime",
-          "docker"
+            "quarkus.native.container-runtime",
+            "docker"
         )
         project.extra.set(
-          "quarkus.native.native-image-xmx",
-          extension.quarkusBuilderXmx
+            "quarkus.native.native-image-xmx",
+            extension.quarkusBuilderXmx
         )
         project.extra.set(
-          "quarkus.native.builder-image",
-          extension.quarkusBuilderImage
+            "quarkus.native.builder-image",
+            extension.quarkusBuilderImage
         )
       }
     }
   }
 
   private fun String.toCamelCase() =
-    replace(Regex("[^a-zA-Z\\d](\\w)")) { it.value.last().uppercaseChar().toString() }
+      replace(Regex("[^a-zA-Z\\d](\\w)")) { it.value.last().uppercaseChar().toString() }
 }
