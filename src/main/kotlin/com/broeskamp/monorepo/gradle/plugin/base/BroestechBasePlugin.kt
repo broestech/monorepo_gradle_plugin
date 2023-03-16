@@ -60,9 +60,9 @@ class BroestechBasePlugin : Plugin<Project> {
       extension.dockerRegistry.convention(rootExtension.dockerRegistry)
 
       repositories {
+        mavenLocal()
         mavenCentral()
         google()
-        mavenLocal()
       }
 
       plugins.withType<JavaBasePlugin> {
