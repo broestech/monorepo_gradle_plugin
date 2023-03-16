@@ -2,18 +2,18 @@ rootProject.name = "monorepo_gradle_plugin"
 
 pluginManagement {
   repositories {
+    mavenLocal()
+    gradlePluginPortal()
     mavenCentral()
     google()
-    gradlePluginPortal()
-    mavenLocal()
   }
 }
 
 dependencyResolutionManagement {
   repositories {
+    mavenLocal()
+    gradlePluginPortal()
     mavenCentral()
     google()
-    gradlePluginPortal()
-    mavenLocal()
   }
 }
