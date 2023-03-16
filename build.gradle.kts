@@ -74,6 +74,7 @@ publishing {
     pom {
       description.set("Gradle plugin configurations for mono-repositories with Kotlin, Quarkus, Vue & TypeScript.")
       url.set("https://github.com/broestech/monorepo_gradle_plugin")
+      name.set("Broeskamp plugin")
       licenses {
         license {
           name.set("MIT License")
@@ -128,6 +129,17 @@ publishing {
         uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
       else
         uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+    }
+  }
+}
+
+afterEvaluate {
+  publishing {
+    publications.withType<MavenPublication> {
+      pom {
+        description.set("Gradle plugin configurations for mono-repositories with Kotlin, Quarkus, Vue & TypeScript.")
+        name.set("Broeskamp plugin")
+      }
     }
   }
 }
