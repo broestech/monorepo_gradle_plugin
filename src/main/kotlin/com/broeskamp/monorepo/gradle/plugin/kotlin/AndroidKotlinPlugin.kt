@@ -4,6 +4,7 @@ import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.broeskamp.monorepo.gradle.plugin.android.AndroidExtension
 import com.broeskamp.monorepo.gradle.plugin.base.BroestechBaseRootExtension
+import com.broeskamp.monorepo.gradle.plugin.mmp.BroestechMultiplatformExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -14,11 +15,16 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 
 class AndroidKotlinPlugin : Plugin<Project> {
   override fun apply(project: Project): Unit = project.run {
-    apply<AppPlugin>()
-    apply<KotlinAndroidPluginWrapper>()
 
     val androidExtension = extensions.create<AndroidExtension>("broestechAndroid")
+    val mmpExtension = extensions.create<BroestechMultiplatformExtension>("broestechMmp")
     val rootExtension = rootProject.the<BroestechBaseRootExtension>()
+
+    androidExtension.setAndroidDefaultProperties()
+    mmpExtension.setDefaultProperties()
+
+    apply<AppPlugin>()
+    apply<KotlinAndroidPluginWrapper>()
 
     @Suppress("UnstableApiUsage")
     configure<BaseAppModuleExtension> {
@@ -41,7 +47,7 @@ class AndroidKotlinPlugin : Plugin<Project> {
       }
       composeOptions {
         kotlinCompilerExtensionVersion =
-            androidExtension.kotlinCompilerExtensionVersion.get()
+          androidExtension.kotlinCompilerExtensionVersion.get()
       }
       packagingOptions {
         resources {

@@ -11,6 +11,5 @@ open class VueTsWebAppExtension(project: Project) {
 
   init {
     outputDir.convention(project.layout.buildDirectory.dir("vite"))
-    nodeVersion.convention("18.12.1")
   }
 }

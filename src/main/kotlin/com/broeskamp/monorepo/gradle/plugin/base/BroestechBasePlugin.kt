@@ -12,6 +12,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.BufferedReader
 
@@ -35,24 +36,30 @@ class BroestechBasePlugin : Plugin<Project> {
     apply<GitVersioningPlugin>()
     val rootExtension = extensions.create<BroestechBaseRootExtension>("broestechRoot")
 
+    gradle.startParameter.isContinueOnFailure = true
+    defaultTasks("assemble")
+
     version = "0.0.0-SNAPSHOT"
     configure<GitVersioningPluginExtension> {
       apply {
         rev {
           describeTagPattern = "v(.+)"
           val process = ProcessBuilder("git", "describe", "--abbrev=0", "--tags")
-              .redirectOutput(ProcessBuilder.Redirect.PIPE)
-              .start()
+            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+            .start()
           val describeOutput =
-              process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
+            process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
           version = (Regex(describeTagPattern).find(describeOutput)?.groupValues?.get(1)
-              ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
+            ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
         }
       }
     }
 
     allprojects {
       apply<BasePlugin>()
+
+      extraProperties.set(KOTLIN_CODE_STYLE, KOTLIN_CODE_STYLE_VALUE)
+      extraProperties.set(KOTLIN_JS_COMPILER, KOTLIN_JS_COMPILER_VALUE)
 
       val extension = extensions.create<BroestechBaseExtension>("broestech")
       extension.dockerRegistryUsername.convention(rootExtension.dockerRegistryUsername)
@@ -105,5 +112,13 @@ class BroestechBasePlugin : Plugin<Project> {
         group = rootExtension.group.get()
       }
     }
+  }
+
+  companion object {
+    const val KOTLIN_CODE_STYLE = "kotlin.code.style"
+    const val KOTLIN_CODE_STYLE_VALUE = "official"
+
+    const val KOTLIN_JS_COMPILER = "kotlin.js.compiler"
+    const val KOTLIN_JS_COMPILER_VALUE = "ir"
   }
 }
