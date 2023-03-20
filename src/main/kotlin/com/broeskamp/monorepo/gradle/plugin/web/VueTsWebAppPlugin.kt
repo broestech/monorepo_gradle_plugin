@@ -1,5 +1,6 @@
 package com.broeskamp.monorepo.gradle.plugin.web
 
+import com.broeskamp.monorepo.gradle.plugin.util.version
 import com.github.gradle.node.NodeExtension
 import com.github.gradle.node.NodePlugin
 import com.github.gradle.node.npm.task.NpmTask
@@ -8,6 +9,7 @@ import com.github.gradle.node.util.PlatformHelper
 import com.github.gradle.node.variant.VariantComputer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.kotlin.dsl.*
@@ -16,6 +18,8 @@ class VueTsWebAppPlugin : Plugin<Project> {
   override fun apply(project: Project): Unit = project.run {
 
     val extension = project.extensions.create<VueTsWebAppExtension>("broesVue")
+    val catalogsExtension = the<VersionCatalogsExtension>()
+    extension.nodeVersion.convention(catalogsExtension.version("node"))
 
     configureNodePlugin(extension)
 
@@ -37,14 +41,14 @@ class VueTsWebAppPlugin : Plugin<Project> {
         standardOutput = System.out
       }
       inputs.files(
-          fileTree("src/main/webapp")
+        fileTree("src/main/webapp")
       )
-          .withPropertyName("sourceFiles")
-          .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
+        .withPropertyName("sourceFiles")
+        .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
       outputs.files(
-          fileTree(extension.outputDir)
+        fileTree(extension.outputDir)
       )
-          .withPropertyName("outputFiles")
+        .withPropertyName("outputFiles")
     }
     val zip = tasks.register<Zip>("zip") {
       dependsOn(buildVue)
@@ -79,18 +83,18 @@ class VueTsWebAppPlugin : Plugin<Project> {
         if (download.get()) {
           dependencies {
             add(
-                nodeConfiguration.name,
-                VariantComputer(PlatformHelper.INSTANCE)
-                    .computeNodeArchiveDependency(this@run)
+              nodeConfiguration.name,
+              VariantComputer(PlatformHelper.INSTANCE)
+                .computeNodeArchiveDependency(this@run)
             )
           }
           tasks.named<NodeSetupTask>(NodeSetupTask.NAME) {
             nodeArchiveFile.set(
-                project.layout.file(
-                    provider {
-                      nodeConfiguration.get().singleFile
-                    }
-                )
+              project.layout.file(
+                provider {
+                  nodeConfiguration.get().singleFile
+                }
+              )
             )
           }
         }

@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 class MultiplatformPlugin : Plugin<Project> {
   override fun apply(project: Project): Unit = project.run {
 
+    val mmpExtension = extensions.create<BroestechMultiplatformExtension>("broestechMmp")
+    mmpExtension.setDefaultProperties()
+
     apply<KotlinMultiplatformPluginWrapper>()
 
     val typescriptD = configurations.register("typescriptD") {
@@ -24,7 +27,7 @@ class MultiplatformPlugin : Plugin<Project> {
         withJava()
         testRuns["test"].executionTask.configure(KotlinJvmTest::useJUnitPlatform)
       }
-      js {
+      js(IR) {
         browser {
           commonWebpackConfig {
             sourceMaps = false

@@ -2,6 +2,7 @@ plugins {
   `kotlin-dsl`
   `maven-publish`
   signing
+  id("com.github.gmazzo.buildconfig") version "3.1.0"
 }
 
 if (version == "unspecified") {
@@ -9,8 +10,8 @@ if (version == "unspecified") {
 }
 group = "com.broeskamp.monorepo.gradle.plugin"
 
-val kotlinVersion: String by project
-val quarkusVersion: String by project
+val kotlinVersion: String = "1.8.10"
+val quarkusVersion: String = "2.16.2.Final"
 
 dependencies {
   implementation("com.github.node-gradle:gradle-node-plugin:3.5.0")
@@ -22,13 +23,24 @@ dependencies {
   implementation("com.android.tools.build:gradle:7.4.2")
 }
 
+buildConfig {
+  packageName(group.toString())
+  useKotlinOutput()
+  buildConfigField("String", "VERSION", "\"${project.version}\"")
+  buildConfigField("String", "PLUGIN_ID_PREFIX", "\"${project.group}\"")
+}
+
 gradlePlugin {
   plugins {
+    register("broestech-settings") {
+      id = "$group.settings"
+      implementationClass = "com.broeskamp.monorepo.gradle.plugin.base.settings.BroeskampSettingsPlugin"
+    }
     register("broestech-base") {
       id = "$group.base"
       implementationClass = "com.broeskamp.monorepo.gradle.plugin.base.BroestechBasePlugin"
     }
-    register("broestech-vue-app-plugin") {
+    register("broestech-vue-app") {
       id = "$group.vue-app"
       implementationClass = "com.broeskamp.monorepo.gradle.plugin.web.VueTsWebAppPlugin"
     }
@@ -114,9 +126,9 @@ publishing {
       name = "MavenCentral"
       credentials {
         username =
-            System.getenv("OSSRH_USERNAME") ?: project.properties["ossrhUsername"] as String? ?: ""
+          System.getenv("OSSRH_USERNAME") ?: project.properties["ossrhUsername"] as String? ?: ""
         password =
-            System.getenv("OSSRH_PASSWORD") ?: project.properties["ossrhPassword"] as String? ?: ""
+          System.getenv("OSSRH_PASSWORD") ?: project.properties["ossrhPassword"] as String? ?: ""
 
         if (username!!.isEmpty()) {
           project.logger.error("Username for maven central is empty")

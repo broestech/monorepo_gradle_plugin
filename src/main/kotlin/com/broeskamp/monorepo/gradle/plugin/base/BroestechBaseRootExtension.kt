@@ -7,6 +7,7 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
 
 open class BroestechBaseRootExtension(project: Project) {
+
   val javaVersion: Property<JavaVersion> = project.objects.property()
   val group: Property<String> = project.objects.property()
   val dockerRegistryUsername: Property<String> = project.objects.property()
@@ -17,14 +18,15 @@ open class BroestechBaseRootExtension(project: Project) {
     javaVersion.convention(VERSION_17)
     //if env prop is null the property is unset!
     dockerRegistryUsername.convention(
-        System.getenv("DOCKER_REGISTRY_USERNAME") ?: "AWS"
+      System.getenv("DOCKER_REGISTRY_USERNAME") ?: "AWS"
     )
     //if env prop is null the property is unset!
     dockerRegistryPassword.convention(
-        System.getenv("DOCKER_REGISTRY_PASSWORD") ?: ""
+      System.getenv("DOCKER_REGISTRY_PASSWORD") ?: ""
     )
     dockerRegistry.convention(
-        System.getenv("DOCKER_REGISTRY") ?: ""
+      System.getenv("DOCKER_REGISTRY") ?: ""
     )
   }
+
 }

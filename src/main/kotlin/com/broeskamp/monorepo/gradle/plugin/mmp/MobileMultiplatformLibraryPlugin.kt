@@ -16,15 +16,18 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 class MobileMultiplatformLibraryPlugin : Plugin<Project> {
   override fun apply(target: Project): Unit = target.run {
 
+    val rootExtension = rootProject.the<BroestechBaseRootExtension>()
+    val androidExtension = extensions.create<AndroidExtension>("broestechAndroid")
+//        val iOSExtension = extensions.create<iOSExtension>("broestechiOS")
+    val mmpExtension = extensions.create<BroestechMultiplatformExtension>("broestechMmp")
+
+    androidExtension.setAndroidDefaultProperties()
+    mmpExtension.setDefaultProperties()
+
     apply<KotlinMultiplatformPluginWrapper>()
 
     apply<LibraryPlugin>()
 //        apply<KotlinCocoapodsPlugin>()
-
-//        val iOSExtension = extensions.create<iOSExtension>("broestechiOS")
-    val androidExtension = extensions.create<AndroidExtension>("broestechAndroid")
-
-    val rootExtension = rootProject.the<BroestechBaseRootExtension>()
 
     configure<KotlinMultiplatformExtension> {
       android {
@@ -34,6 +37,7 @@ class MobileMultiplatformLibraryPlugin : Plugin<Project> {
           }
         }
       }
+
 //            iosX64()
 //            iosArm64()
 //            iosSimulatorArm64()
