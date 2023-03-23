@@ -21,7 +21,6 @@ class MobileMultiplatformLibraryPlugin : Plugin<Project> {
 //        val iOSExtension = extensions.create<iOSExtension>("broestechiOS")
     val mmpExtension = extensions.create<BroestechMultiplatformExtension>("broestechMmp")
 
-    androidExtension.setAndroidDefaultProperties()
     mmpExtension.setDefaultProperties()
 
     apply<KotlinMultiplatformPluginWrapper>()
