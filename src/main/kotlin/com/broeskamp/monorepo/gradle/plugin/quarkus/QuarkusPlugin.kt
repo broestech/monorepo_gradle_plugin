@@ -14,7 +14,6 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.configurationcache.extensions.capitalized
-import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.gradle.plugins.docker.DockerExtension
 import org.jetbrains.gradle.plugins.docker.DockerImage
@@ -135,9 +134,7 @@ class QuarkusPlugin : Plugin<Project> {
     }
 
     gradle.taskGraph.whenReady {
-      if (hasTask("$path:$dockerTaskName")
-        && OperatingSystem.current().familyName != "linux"
-      ) {
+      if (hasTask("$path:$dockerTaskName")) {
         println("")
         println("Enable Quarkus Native Container Build")
         println("")

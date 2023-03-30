@@ -20,7 +20,6 @@ class AndroidKotlinPlugin : Plugin<Project> {
     val mmpExtension = extensions.create<BroestechMultiplatformExtension>("broestechMmp")
     val rootExtension = rootProject.the<BroestechBaseRootExtension>()
 
-    androidExtension.setAndroidDefaultProperties()
     mmpExtension.setDefaultProperties()
 
     apply<AppPlugin>()
