@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.BufferedReader
 
 /**
  * The BroestechBasePlugin is a Gradle plugin that applies basic configuration for all projects in a multi-project build.
@@ -40,17 +39,34 @@ class BroestechBasePlugin : Plugin<Project> {
     defaultTasks("assemble")
 
     version = "0.0.0-SNAPSHOT"
+    val nextVersionPattern =
+      "\${describe.tag.version.major}.\${describe.tag.version.minor}.\${describe.tag.version.patch.next}"
+    val branchNamePattern = "\${ref.name}-SNAPSHOT"
     configure<GitVersioningPluginExtension> {
       apply {
+        describeTagPattern = "v(?<version>.+)"
+        refs {
+          considerTagsOnBranches = true
+          tag("v(?<version>.+)") {
+            version = "\${ref.version}"
+          }
+          branch("master") {
+            version = "$nextVersionPattern-\${commit.short}-SNAPSHOT"
+          }
+          branch("feature/(?<name>.+)") {
+            version = "$nextVersionPattern-\${commit.short}-f-$branchNamePattern"
+          }
+          branch("bugfix/(.+)") {
+            version = "$nextVersionPattern-\${commit.short}-b-$branchNamePattern"
+          }
+          branch("hotfix/(.+)") {
+            version = "$nextVersionPattern-\${commit.short}-h-$branchNamePattern"
+          }
+        }
+
+        // optional fallback configuration in case of no matching ref configuration
         rev {
-          describeTagPattern = "v(.+)"
-          val process = ProcessBuilder("git", "describe", "--abbrev=0", "--tags")
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
-            .start()
-          val describeOutput =
-            process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
-          version = (Regex(describeTagPattern).find(describeOutput)?.groupValues?.get(1)
-            ?: "0.0.0") + "-\${commit.short}-SNAPSHOT"
+          version = "SNAPSHOT"
         }
       }
     }
