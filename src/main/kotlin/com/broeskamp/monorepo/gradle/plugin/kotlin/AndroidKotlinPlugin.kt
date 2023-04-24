@@ -7,7 +7,6 @@ import com.broeskamp.monorepo.gradle.plugin.base.BroestechBaseRootExtension
 import com.broeskamp.monorepo.gradle.plugin.mmp.BroestechMultiplatformExtension
 import com.broeskamp.monorepo.gradle.plugin.util.Version
 import me.qoomon.gradle.gitversioning.GitVersioningPluginExtension
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -44,6 +43,7 @@ class AndroidKotlinPlugin : Plugin<Project> {
         versionName = project.version.toString()
 
         tasks.register("androidVersions") {
+          group = "Help"
           println("Project version: $version")
           println("Project version code: $versionCode")
         }
@@ -92,10 +92,11 @@ class AndroidKotlinPlugin : Plugin<Project> {
         .globalFormatPlaceholderMap["describe.distance"]!!.get().toInt()
     }
     if (versionCode < 1) {
-      throw GradleException(
+      logger.warn(
         "android.defaultConfig.versionCode is set to $versionCode, but it should be a positive integer."
             + "\nSet the first version tag e.g. v0.0.1!"
       )
+      versionCode = 1
     }
     versionCode
   }

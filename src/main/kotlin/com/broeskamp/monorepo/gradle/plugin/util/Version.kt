@@ -1,6 +1,6 @@
 package com.broeskamp.monorepo.gradle.plugin.util
 
-data class Version private constructor(
+data class Version(
   /**
    * Retrieves the MAJOR part of the version object.
    * @return the number for the major version
@@ -24,7 +24,7 @@ data class Version private constructor(
 
   companion object {
     private val globalVersionPattern = Regex(
-      "^([0-9]+)(?:\\.([0-9]+))?(?:\\.([0-9]+))?([\\-\\+][a-zA-Z0-9][a-zA-Z0-9\\-_\\.\\+]*)?$"
+      "^([0-9]+)(?:\\.([0-9]+))?(?:\\.([0-9]+))?([\\-+][a-zA-Z0-9][a-zA-Z0-9\\-_.+]*)?$"
     )
 
     /**

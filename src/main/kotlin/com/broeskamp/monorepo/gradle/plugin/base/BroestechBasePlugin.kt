@@ -66,7 +66,7 @@ class BroestechBasePlugin : Plugin<Project> {
 
         // optional fallback configuration in case of no matching ref configuration
         rev {
-          version = "SNAPSHOT"
+          version = "0-SNAPSHOT"
         }
       }
     }
