@@ -58,9 +58,9 @@ class QuarkusPlugin : Plugin<Project> {
       implementation("io.quarkus:quarkus-hibernate-validator")
       implementation("io.quarkus:quarkus-smallrye-health")
 
-      implementation("io.quarkus:quarkus-resteasy-reactive-kotlin-serialization")
-      implementation("io.quarkus:quarkus-resteasy-reactive")
-      implementation("io.quarkus:quarkus-resteasy-reactive-kotlin")
+      implementation("io.quarkus:quarkus-resteasy")
+      implementation("io.quarkus:quarkus-resteasy-kotlin")
+      implementation("io.quarkus:quarkus-resteasy-kotlin-serialization")
 
       testImplementation("io.quarkus:quarkus-junit5")
       testImplementation("io.rest-assured:rest-assured")
